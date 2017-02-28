@@ -36,7 +36,9 @@ public class LoginController {
      */
     @Transactional
     public HttpResponse index() {
-        return templateEngine.render("login/login", "login", new LoginForm());
+
+        return templateEngine.render("login/login", "login", new LoginForm()
+        );
     }
 
     /**

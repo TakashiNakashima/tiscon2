@@ -5,6 +5,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 /**
  * キャンペーン新規作成Formクラス.
@@ -29,6 +31,8 @@ public class CampaignCreateForm extends FormBase {
      * 達成人数
      */
     @NotBlank
-    @Digits(integer = 10, fraction = 0)
+    @Digits(integer = 9, fraction = 0)
+    @Min(1)
+    @Max(999999999)
     private String goal;
 }

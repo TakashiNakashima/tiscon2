@@ -23,7 +23,7 @@ public class Campaign implements Serializable {
     // Markdown description
     private String statement;
 
-    private Long goal;
+    private long goal;
 
     private Long createUserId;
 }
