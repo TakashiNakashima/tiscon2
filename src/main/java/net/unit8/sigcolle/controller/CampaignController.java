@@ -96,8 +96,7 @@ public class CampaignController {
      * @param session ログインしているユーザsession
      */
     @Transactional
-    public HttpResponse create(CampaignCreateForm form,
-                               Session session) {
+    public HttpResponse create(CampaignCreateForm form,Session session) {
         if (form.hasErrors()) {
             return templateEngine.render("campaign/new", "form", form);
         }
@@ -107,18 +106,24 @@ public class CampaignController {
 
         // TODO タイトル, 目標人数を登録する
         Campaign model = new Campaign();
+        model.setTitle(processor.markdownToHtml(form.getTitle())); /*タイトルの登録*/
         model.setStatement(processor.markdownToHtml(form.getStatement()));
         model.setCreateUserId(principal.getUserId());
+        model.setGoal(Integer.parseInt(form.getGoal()));/*目標人数の登録*/
 
         CampaignDao campaignDao = domaProvider.getDao(CampaignDao.class);
         // TODO Databaseに登録する
+        model.setTitle(form.getTitle());
+        model.setStatement(form.getStatement());
+        model.setGoal(Integer.parseInt(form.getGoal()));
 
-        HttpResponse response = redirect("/campaign/" + model.getCampaignId(), SEE_OTHER);
-        response.setFlash(new Flash<>(""/* TODO: キャンペーンが新規作成できた旨のメッセージを生成する */));
+        campaignDao.insert(model);
+
+        HttpResponse response = redirect("/campaign/"+model.getCampaignId(),SEE_OTHER);
+        response.setFlash(new Flash<>(""/*TODO*/));
 
         return response;
     }
-
     /**
      * ログインユーザの作成したキャンペーン一覧を表示します.
      * ---------------------------------------
@@ -130,12 +135,10 @@ public class CampaignController {
         throw new UnsupportedOperationException("実装してください !!");
     }
 
-    private HttpResponse showCampaign(Long campaignId,
-                                      SignatureForm form,
-                                      String message) {
-        CampaignDao campaignDao = domaProvider.getDao(CampaignDao.class);
-        Campaign campaign = campaignDao.selectById(campaignId);
-        UserDao userDao = domaProvider.getDao(UserDao.class);
+    private HttpResponse showCampaign(Long campaignId, SignatureForm form,String message) {//(キャンペーンID,)
+        CampaignDao campaignDao = domaProvider.getDao(CampaignDao.class); /*campaignDaoの生成*/
+        Campaign campaign = campaignDao.selectById(campaignId);/*campaignID*/
+        UserDao userDao = domaProvider.getDao(UserDao.class);/**/
         User user = userDao.selectByUserId(campaign.getCreateUserId());
 
         SignatureDao signatureDao = domaProvider.getDao(SignatureDao.class);

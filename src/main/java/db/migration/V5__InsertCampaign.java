@@ -27,7 +27,8 @@ public class V5__InsertCampaign implements JdbcMigration {
                             "\n" +
                             "- 全社で使えるチャットを導入します。\n" +
                             "- フリーWi-Fiを使えるスポットを増やします。\n" +
-                            "- PC完備の研修室を作ります。\n"
+                            "- PC完備の研修室を作りますa。\n"
+
             ));
             stmt.setLong(4, 1000L);
             stmt.setLong(5, 0L);
